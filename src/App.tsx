@@ -32,22 +32,54 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import GiaoDich from './pages/GiaoDich';
+import ViCuaToi from './pages/ViCuaToi';
+import LocationRequest from './components/LocationRequest';
+import Login from './pages/Login';
+import { useDispatch } from 'react-redux';
+import { useUser } from './hook/useUser';
+import { useEffect } from 'react';
+import BookingDetail from './pages/BookingDetail';
+import History from './pages/History';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
+const routerAuth = ['/login']
+
+
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const { loadUser } = useUser()
+
+  useEffect(() => {
+
+    if (!routerAuth.includes(window.location.pathname)) {
+      loadUser()
+      if (!loadUser().isLogin) {
+        window.location.href = '/login'
+      }
+    }
+  }, [dispatch])
+
+  return (<IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/home">
           <Home />
         </Route>
+        <Route path="/" exact component={LocationRequest} />
+        <Route path="/giao-dich" component={GiaoDich} exact />
+        <Route path="/vi-cua-toi" component={ViCuaToi} exact />
+        <Route path="/booking-detail/:id" component={BookingDetail} exact />
+        <Route path="/login" component={Login} exact />
+        <Route path="/history" component={History} exact />
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
-);
+  )
+};
 
 export default App;

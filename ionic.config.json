@@ -1,5 +1,7 @@
 {
   "name": "medtou-driver",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react-vite"
 }
